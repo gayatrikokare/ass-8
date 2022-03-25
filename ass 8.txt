@@ -1,0 +1,126 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct student 
+{
+    int rno;
+    char name[20];
+    char div;
+    char add[20];
+}student;
+void create()
+{
+    student *s;
+   int n,i,j;
+   FILE *fp;
+   printf("\nEnter number of students:");
+   scanf("%d",&n);
+   
+   s=(student*)calloc(n,sizeof(student));
+  fp=fopen("datastudents.txt","w");
+   for(i=0;i<n;i++)
+   {
+       printf("\nRoll no:");
+       scanf("%d",&s[i]);
+       fflush(stdin);
+       printf("\nEnter name");
+       scanf("%[^\n]s",s[i].name);
+        fflush(stdin);
+         printf("DIV:");
+       scanf("%c",&s[i].div);
+           fflush(stdin);
+         printf("\nEnter address");
+       scanf("%[^\n]s",s[i].add);
+       fwrite(&s[i],sizeof(student),1,fp);
+   }
+
+   fclose(fp);
+}
+void display()
+{
+    student s1;
+    FILE *fp;
+    fp=fopen("datastudents.txt","r");
+     printf("roll name div add");
+    while(fread(&s1,sizeof(student),1,fp))
+    {
+        printf("\n%d %s\t%c %s",s1.rno,s1.name,s1.div,s1.add);
+    }
+  fclose(fp);
+}
+void append()
+{
+    student *s;
+   int n,i,j;
+   FILE *fp;
+   printf("\nEnter number of students:");
+   scanf("%d",&n);
+   
+   s=(student*)calloc(n,sizeof(student));
+  fp=fopen("datastudents.txt","a");
+   for(i=0;i<n;i++)
+   {
+       printf("\nRoll no:");
+       scanf("%d",&s[i]);
+       fflush(stdin);
+       printf("\nEnter name");
+       scanf("%[^\n]s",s[i].name);
+        fflush(stdin);
+         printf("DIV:");
+       scanf("%c",&s[i].div);
+           fflush(stdin);
+         printf("\nEnter address");
+       scanf("%[^\n]s",s[i].add);
+       fwrite(&s[i],sizeof(student),1,fp);
+   }
+
+   fclose(fp); 
+}
+void search()
+{
+ student s1;
+    FILE *fp;
+    int rno;
+    int found=0;
+    fp=fopen("datastudents.txt","r");
+    printf("Enter roll no to search: ");
+    scanf("%d",&rno);
+     printf("roll  name   div add");
+    while(fread(&s1,sizeof(student),1,fp))
+    {
+        if(s1.rno==rno)
+        {
+        printf("\n%d     %s\t%c %s",s1.rno,s1.name,s1.div,s1.add);
+        found=1;
+        }
+    }
+    if(found!=1)
+    {
+        printf("\nRecord not found");
+    }
+  fclose(fp);   
+}
+int main()
+{
+    int ch;
+    do
+    {
+        printf("\n1.Create\n2.Display\n3.Append\n4.search\n");
+        scanf("%d",&ch);
+          switch(ch)
+          {
+              case 1:
+                  create();
+                  break;
+             case 2:
+                  display();
+                  break;
+                case 3:
+               append();
+                break;
+                case 4:
+                search();
+                break;
+          }
+
+    }while(ch!=0);
+  }
